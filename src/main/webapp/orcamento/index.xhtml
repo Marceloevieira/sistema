@@ -1,0 +1,110 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	template="template/ui.xhtml">
+	<ui:define name="body">
+
+		<h3>Lista de Orçamentos</h3>
+		<p:separator />
+		<h:form id="pesquisa-form">
+			<p:growl id="messages"  showDetail="true"/>
+
+			<p:menubar>
+		  <p:submenu label="Edit" icon="ui-icon-pencil">
+            <p:menuitem value="Undo" url="#" icon="ui-icon-arrowreturnthick-1-w" />
+            <p:menuitem value="Redo" url="#" icon="ui-icon-arrowreturnthick-1-e" />
+        </p:submenu>
+ 
+	
+			
+				<f:facet name="options">
+			<!-- 	auto complete
+				 -->	
+					<p:commandButton type="button" value="Logout"
+						icon="ui-icon-extlink" />
+				</f:facet>
+			</p:menubar>
+		</h:form>
+		<p:separator />
+
+		<!--  inicio do form lista-orcamentos -->
+		<h:form id="lista-orcamento">
+			<p:dataTable id="orcamentos" var="orcamento"
+				value="#{orcamentoBean.orcamentos}" paginator="true" rows="5">
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Id" />
+					</f:facet>
+					<h:outputText value="#{orcamento.id}" />
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Pedido" />
+					</f:facet>
+
+					<h:outputText value="#{orcamento.pedido}" />
+
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Status" />
+					</f:facet>
+					<h:outputText value="#{orcamento.status}" />
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Data Inclusão" />
+					</f:facet>
+					<h:outputText value="#{orcamento.data_inclusao}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputLabel value="Editar" />
+					</f:facet>
+
+					<p:commandButton update=":edit-form:display"
+						oncomplete="PF('clienteshow').show()" icon="ui-icon-pencil">
+						<f:setPropertyActionListener value="#{orcamento}"
+							target="#{orcamentoBean.orcamento}" />
+					</p:commandButton>
+
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputLabel value="Excluir" />
+					</f:facet>
+
+					<p:commandButton icon="ui-icon-trash"
+						action="#{orcamentoBean.remover()}" update="orcamentos">
+						<p:confirm header="Confirmação"
+							message="Deseja mesmo Excluir este Registro?"
+							icon="ui-icon-alert" />
+						<f:setPropertyActionListener value="#{orcamento}"
+							target="#{orcamentoBean.orcamento}" />
+					</p:commandButton>
+				</p:column>
+
+			</p:dataTable>
+			<p:confirmDialog global="true" showEffect="fade" hideEffect="explode">
+				<p:commandButton value="Sim" type="button"
+					styleClass="ui-confirmdialog-yes" icon="ui-icon-check">
+
+
+				</p:commandButton>
+				<p:commandButton value="Não" type="button"
+					styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+			</p:confirmDialog>
+		</h:form>
+		<!-- Fim do form lista-orcamentos -->
+
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,213 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	template="template/ui.xhtml">
+	<ui:define name="body">
+
+
+		<h3>Lista De Clientes</h3>
+		<p:separator />
+		<h:form id="pesquisa-form">
+			<p:growl id="messages" showDetail="true" />
+			<p:menubar>
+				<p:menuitem value="Adicionar" update=":cadastrar-form:display"
+					oncomplete="PF('cadastrarshow').show()" icon="ui-icon-contact" />
+				<f:facet name="options">
+					<p:autoComplete id="event" style="margin-right:10px"
+						value="#{clienteBean.cliente.id}"
+						completeMethod="#{clienteBean.completeText}" var="cliente"
+						itemLabel="#{cliente.nome}" itemValue="#{cliente.id}"
+						placeholder="Search">
+						<p:ajax event="itemSelect" listener="#{clienteBean.onItemSelect}"
+							update=":edit-form:display" oncomplete="PF('clienteshow').show()" />
+					</p:autoComplete>
+
+					<p:commandButton type="button" value="Logout"
+						icon="ui-icon-extlink" />
+				</f:facet>
+			</p:menubar>
+		</h:form>
+		<p:separator />
+
+
+		<!--  inicio do form lista-cliente -->
+		<h:form id="lista-cliente">
+			<p:dataTable id="clientes" var="cliente"
+				value="#{clienteBean.clientes}" paginator="true" rows="5">
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Id" />
+					</f:facet>
+					<h:outputText value="#{cliente.id}" />
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="nome" />
+					</f:facet>
+
+					<h:outputText value="#{cliente.nome}" />
+
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="telefone" />
+					</f:facet>
+					<h:outputText value="#{cliente.telefone}" />
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Celular" />
+					</f:facet>
+					<h:outputText value="#{cliente.celular}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputLabel value="Editar" />
+					</f:facet>
+
+					<p:commandButton update=":edit-form:display"
+						oncomplete="PF('clienteshow').show()" icon="ui-icon-pencil">
+						<f:setPropertyActionListener value="#{cliente}"
+							target="#{clienteBean.cliente}" />
+					</p:commandButton>
+
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputLabel value="Excluir" />
+					</f:facet>
+
+					<p:commandButton icon="ui-icon-trash"
+						action="#{clienteBean.remover()}" update="clientes">
+						<p:confirm header="Confirmação"
+							message="Deseja mesmo Excluir este Registro?"
+							icon="ui-icon-alert" />
+						<f:setPropertyActionListener value="#{cliente}"
+							target="#{clienteBean.cliente}" />
+					</p:commandButton>
+				</p:column>
+
+			</p:dataTable>
+			<p:confirmDialog global="true" showEffect="fade" hideEffect="explode">
+				<p:commandButton value="Sim" type="button"
+					styleClass="ui-confirmdialog-yes" icon="ui-icon-check">
+
+
+				</p:commandButton>
+				<p:commandButton value="Não" type="button"
+					styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+			</p:confirmDialog>
+		</h:form>
+		<!-- Fim do form lista-cliente -->
+
+
+		<!-- inicio do form edit-form  -->
+		<p:dialog header="Cliente Detalhes" widgetVar="clienteshow"
+			resizable="false" draggable="false" showEffect="fade"
+			hideEffect="fade" modal="true">
+			<h:form id="edit-form">
+				<h:panelGrid id="display" columns="2" cellpadding="5" width="400">
+
+					<h:outputText value="Id" />
+					<p:outputLabel id="edit-id" value="#{clienteBean.cliente.id}"
+						readonly="true" />
+					<h:outputLabel for="inplace-nome" value="Nome:" />
+					<p:inplace id="inplace-nome">
+						<p:inputText id="edit-nome" value="#{clienteBean.cliente.nome}" />
+					</p:inplace>
+					<h:outputLabel for="inplace-telefone" value="Telefone Residencial:" />
+					<p:inplace id="inplace-telefone">
+						<p:inputMask id="edit-telefone" mask="(99) 9999-9999"
+							value="#{clienteBean.cliente.telefone}" />
+					</p:inplace>
+					<h:outputLabel for="inplace-Celular" value="Celular:" />
+					<p:inplace id="inplace-Celular">
+						<p:inputMask id="edit-celular" mask="(99) 9999-9999"
+							value="#{clienteBean.cliente.celular}" />
+					</p:inplace>
+					<h:outputLabel for="inplace-ativo" value="Ativo:" />
+					<p:inplace id="inplace-ativo">
+						<p:selectBooleanButton id="edit-ativo"
+							value="#{clienteBean.cliente.ativo}" onLabel="SIM" offLabel="NAO"
+							onIcon="ui-icon-check" offIcon="ui-icon-close" />
+					</p:inplace>
+					<h:outputLabel for="inplace-observacao" value="Observação : " />
+					<p:inplace id="inplace-observacao" effect="slide">
+						<p:inputTextarea id="edit-observacao"
+							value="#{clienteBean.cliente.observacao}" rows="5" cols="30"
+							counter="textreaming" maxlength="255"
+							counterTemplate="{0} characters remaining." autoResize="false" />
+					</p:inplace>
+					<p:column />
+					<h:outputLabel id="textreaming" />
+				</h:panelGrid>
+				<h:panelGrid columns="1" style="text-align: center;">
+					<p:commandButton value="Salvar" action="#{clienteBean.atualiza()}"
+						update=":lista-cliente:clientes display :pesquisa-form:messages"
+						oncomplete="PF('clienteshow').hide()">
+					</p:commandButton>
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+		<!-- fim do form edit-cliente -->
+
+		<!-- inicio do form cadastra-form  -->
+		<p:dialog header="Cadastrar Cliente" widgetVar="cadastrarshow"
+			resizable="false" draggable="false" showEffect="fade"
+			hideEffect="fade" modal="true">
+			<h:form id="cadastrar-form">
+				<h:panelGrid id="display" columns="2" cellpadding="5" width="400">
+
+					<h:outputLabel for="cadastra-nome" value="Nome:" />
+
+					<p:inputText id="cadastra-nome"
+						value="#{clienteBean.novoCliente.nome}" />
+
+					<h:outputLabel for="cadastra-telefone"
+						value="Telefone Residencial:" />
+
+					<p:inputMask id="cadastra-telefone" mask="(99) 9999-9999"
+						value="#{clienteBean.novoCliente.telefone}" />
+
+					<h:outputLabel for="cadastra-celular" value="Celular:" />
+
+					<p:inputMask id="cadastra-celular" mask="(99) 9999-9999"
+						value="#{clienteBean.novoCliente.celular}" />
+
+					<h:outputLabel for="cadastra-ativo" value="Ativo:" />
+
+					<p:selectBooleanButton id="cadastra-ativo"
+						value="#{clienteBean.novoCliente.ativo}" onLabel="SIM"
+						offLabel="NAO" onIcon="ui-icon-check" offIcon="ui-icon-close" />
+
+					<h:outputLabel for="cadastra-observacao" value="Observação : " />
+
+					<p:inputTextarea id="cadastra-observacao"
+						value="#{clienteBean.novoCliente.observacao}" rows="5" cols="30"
+						counter="textreaming" maxlength="255"
+						counterTemplate="{0} characters remaining." autoResize="false" />
+
+					<p:column />
+					<h:outputLabel id="textreaming" />
+				</h:panelGrid>
+				<h:panelGrid columns="1" style="text-align: center;">
+					<p:commandButton value="Salvar"
+						actionListener="#{clienteBean.salvar()}"
+						update=":lista-cliente:clientes :pesquisa-form:messages"
+						oncomplete="PF('cadastrarshow').hide()">
+					</p:commandButton>
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+		<!-- fim do form cadastra-cliente -->
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	template="../template/ui.xhtml">
+	<ui:define name="body">
+
+		<h3>BEM VINDO AO SISTEMA</h3>
+		<p:panel header="Cadastro de Pedidos">
+			<h:form id="form-pedidos">
+				<div align="center">
+					<p:panelGrid columns="2">
+						<p:outputLabel for="descricao" value="Descricao : " />
+						<p:inputTextarea id="descricao"
+							value="#{pedidoBean.pedido.descricao}" rows="5" maxlength="255"
+							cols="30" counterTemplate="{0} characters remaining."
+							autoResize="false" />
+						<p:outputLabel for="placa" value="Placa : " />
+						<p:inputMask value="#{pedidoBean.pedido.placa}" mask="999-9999"
+							id="placa" />
+						<p:outputLabel for="veiculo" value="Veiculo(Modelo/Ano) : " />
+						<p:inputText value="#{pedidoBean.pedido.veiculo_modelo}"
+							id="veiculo" />
+					</p:panelGrid>
+					<p:panelGrid columns="1">
+						<p:commandButton value="Cadastrar">
+
+						</p:commandButton>
+					</p:panelGrid>
+				</div>
+			</h:form>
+		</p:panel>
+	</ui:define>
+</ui:composition>
