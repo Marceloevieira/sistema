@@ -28,9 +28,9 @@ class TypeOfProductController extends Controller
      */
     public function index()
     {
-       return view('type-of-product.index',array(
-        'aTypeOfProducts' => TypeOfProduct::paginate(10)
-       ));
+        return view('type-of-product.index', array(
+            'aTypeOfProducts' => TypeOfProduct::paginate(10)
+        ));
     }
 
     /**
@@ -51,12 +51,12 @@ class TypeOfProductController extends Controller
      */
     public function store(TypeOfProductFormRequest $request)
     {
-        
+
         $validated = $request->validated();
 
         TypeOfProduct::create($request->all());
 
-        return redirect(route('type-of-product.index'))->with('success', $this->description_table.' cadastrado!');
+        return redirect(route('type-of-product.index'))->with('success', $this->description_table . ' cadastrado!');
     }
 
     /**
@@ -67,7 +67,7 @@ class TypeOfProductController extends Controller
      */
     public function show(TypeOfProduct $TypeOfProduct)
     {
-      //
+        //
     }
 
     /**
@@ -78,7 +78,7 @@ class TypeOfProductController extends Controller
      */
     public function edit(TypeOfProduct $TypeOfProduct)
     {
-        return  view('type-of-product.edit',compact('TypeOfProduct'));
+        return  view('type-of-product.edit', compact('TypeOfProduct'));
     }
 
     /**
@@ -94,7 +94,7 @@ class TypeOfProductController extends Controller
 
         $TypeOfProduct->update($request->all());
 
-        return redirect(route('type-of-product.index'))->with('success',  $this->description_table.' atualizado!');
+        return redirect(route('type-of-product.index'))->with('success',  $this->description_table . ' atualizado!');
     }
 
     /**
@@ -106,8 +106,8 @@ class TypeOfProductController extends Controller
     public function destroy(TypeOfProduct $TypeOfProduct)
     {
         $TypeOfProduct->delete();
-        
-        return redirect(route('type-of-product.index'))->with('success',  $this->description_table.' deletado!');
+
+        return redirect(route('type-of-product.index'))->with('success',  $this->description_table . ' deletado!');
     }
 
     /**
@@ -119,15 +119,12 @@ class TypeOfProductController extends Controller
     {
         $data = [];
 
-        if($request->has('q')){
+        if ($request->has('q')) {
             $search = $request->q;
-            $data =TypeOfProduct::select("id","description")
-                    ->where('description','LIKE',"%$search%")
-                    ->get();
+            $data = TypeOfProduct::select("id", "description")
+                ->where('description', 'LIKE', "%$search%")
+                ->get();
         }
         return response()->json($data);
     }
-
-
-
 }

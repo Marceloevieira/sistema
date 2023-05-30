@@ -15,9 +15,9 @@ class ClientController extends Controller
      */
     public function index()
     {
-       return view('client.index',array(
-        'aClients' => Client::paginate(10)
-       ));
+        return view('client.index', array(
+            'aClients' => Client::paginate(10)
+        ));
     }
 
     /**
@@ -54,7 +54,7 @@ class ClientController extends Controller
      */
     public function show(Client $client)
     {
-      //
+        //
     }
 
     /**
@@ -65,7 +65,7 @@ class ClientController extends Controller
      */
     public function edit(Client $client)
     {
-        return  view('client.edit',compact('client'));
+        return  view('client.edit', compact('client'));
     }
 
     /**
@@ -93,7 +93,7 @@ class ClientController extends Controller
     public function destroy(Client $client)
     {
         $client->delete();
-        
+
         return redirect(route('client.index'))->with('success', 'Cliente deletado!');
     }
 
@@ -102,12 +102,12 @@ class ClientController extends Controller
     {
         $data = [];
 
-        if($request->has('q')){
+        if ($request->has('q')) {
             $search = $request->q;
-            $data =Client::select("id","name as description")
-                    ->where('name','LIKE',"%$search%")
-                    ->get();
+            $data = Client::select("id", "name as description")
+                ->where('name', 'LIKE', "%$search%")
+                ->get();
         }
         return response()->json($data);
-    }    
+    }
 }

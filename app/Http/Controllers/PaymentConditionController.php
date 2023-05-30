@@ -28,9 +28,9 @@ class PaymentConditionController extends Controller
      */
     public function index()
     {
-       return view('payment-condition.index',array(
-        'aPaymentConditions' => PaymentCondition::paginate(10)
-       ));
+        return view('payment-condition.index', array(
+            'aPaymentConditions' => PaymentCondition::paginate(10)
+        ));
     }
 
     /**
@@ -51,12 +51,12 @@ class PaymentConditionController extends Controller
      */
     public function store(PaymentConditionFormRequest $request)
     {
-        
+
         $validated = $request->validated();
 
         PaymentCondition::create($request->all());
 
-        return redirect(route('payment-condition.index'))->with('success', $this->description_table.' cadastrado!');
+        return redirect(route('payment-condition.index'))->with('success', $this->description_table . ' cadastrado!');
     }
 
     /**
@@ -67,7 +67,7 @@ class PaymentConditionController extends Controller
      */
     public function show(PaymentCondition $PaymentCondition)
     {
-      //
+        //
     }
 
     /**
@@ -78,7 +78,7 @@ class PaymentConditionController extends Controller
      */
     public function edit(PaymentCondition $PaymentCondition)
     {
-        return  view('payment-condition.edit',compact('PaymentCondition'));
+        return  view('payment-condition.edit', compact('PaymentCondition'));
     }
 
     /**
@@ -94,7 +94,7 @@ class PaymentConditionController extends Controller
 
         $PaymentCondition->update($request->all());
 
-        return redirect(route('payment-condition.index'))->with('success',  $this->description_table.' atualizado!');
+        return redirect(route('payment-condition.index'))->with('success',  $this->description_table . ' atualizado!');
     }
 
     /**
@@ -106,21 +106,20 @@ class PaymentConditionController extends Controller
     public function destroy(PaymentCondition $PaymentCondition)
     {
         $PaymentCondition->delete();
-        
-        return redirect(route('payment-condition.index'))->with('success',  $this->description_table.' deletado!');
+
+        return redirect(route('payment-condition.index'))->with('success',  $this->description_table . ' deletado!');
     }
 
     public function search(Request $request)
     {
         $data = [];
 
-        if($request->has('q')){
+        if ($request->has('q')) {
             $search = $request->q;
-            $data   = PaymentCondition::select("id","description")
-                    ->where('description','LIKE',"%$search%")
-                    ->get();
+            $data   = PaymentCondition::select("id", "description")
+                ->where('description', 'LIKE', "%$search%")
+                ->get();
         }
         return response()->json($data);
     }
-
 }

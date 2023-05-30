@@ -28,9 +28,9 @@ class WarehouseController extends Controller
      */
     public function index()
     {
-       return view('Warehouse.index',array(
-        'aWarehouses' => Warehouse::paginate(10)
-       ));
+        return view('Warehouse.index', array(
+            'aWarehouses' => Warehouse::paginate(10)
+        ));
     }
 
     /**
@@ -55,7 +55,7 @@ class WarehouseController extends Controller
 
         Warehouse::create($request->all());
 
-        return redirect(route('Warehouse.index'))->with('success', $this->description_table.' cadastrado!');
+        return redirect(route('Warehouse.index'))->with('success', $this->description_table . ' cadastrado!');
     }
 
     /**
@@ -77,7 +77,7 @@ class WarehouseController extends Controller
      */
     public function edit(Warehouse $Warehouse)
     {
-        return  view('Warehouse.edit',compact('Warehouse'));
+        return  view('Warehouse.edit', compact('Warehouse'));
     }
 
     /**
@@ -93,7 +93,7 @@ class WarehouseController extends Controller
 
         $Warehouse->update($request->all());
 
-        return redirect(route('Warehouse.index'))->with('success', $this->description_table.' atualizado!');
+        return redirect(route('Warehouse.index'))->with('success', $this->description_table . ' atualizado!');
     }
 
     /**
@@ -105,8 +105,8 @@ class WarehouseController extends Controller
     public function destroy(Warehouse $Warehouse)
     {
         $Warehouse->delete();
-        
-        return redirect(route('Warehouse.index'))->with('success', $this->description_table.' deletado!');
+
+        return redirect(route('Warehouse.index'))->with('success', $this->description_table . ' deletado!');
     }
 
     /**
@@ -118,13 +118,12 @@ class WarehouseController extends Controller
     {
         $data = [];
 
-        if($request->has('q')){
+        if ($request->has('q')) {
             $search = $request->q;
-            $data   = Warehouse::select("id","description")
-                      ->where('description','LIKE',"%$search%")
-                      ->get();
+            $data   = Warehouse::select("id", "description")
+                ->where('description', 'LIKE', "%$search%")
+                ->get();
         }
         return response()->json($data);
     }
-
 }

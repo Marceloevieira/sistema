@@ -28,9 +28,9 @@ class ProductGroupController extends Controller
      */
     public function index()
     {
-       return view('product-group.index',array(
-        'aProductGroups' => ProductGroup::paginate(10)
-       ));
+        return view('product-group.index', array(
+            'aProductGroups' => ProductGroup::paginate(10)
+        ));
     }
 
     /**
@@ -51,12 +51,12 @@ class ProductGroupController extends Controller
      */
     public function store(ProductGroupFormRequest $request)
     {
-        
+
         $validated = $request->validated();
 
         ProductGroup::create($request->all());
 
-        return redirect(route('product-group.index'))->with('success', $this->description_table.' cadastrado!');
+        return redirect(route('product-group.index'))->with('success', $this->description_table . ' cadastrado!');
     }
 
     /**
@@ -67,7 +67,7 @@ class ProductGroupController extends Controller
      */
     public function show(ProductGroup $ProductGroup)
     {
-      //
+        //
     }
 
     /**
@@ -78,7 +78,7 @@ class ProductGroupController extends Controller
      */
     public function edit(ProductGroup $ProductGroup)
     {
-        return  view('product-group.edit',compact('ProductGroup'));
+        return  view('product-group.edit', compact('ProductGroup'));
     }
 
     /**
@@ -94,7 +94,7 @@ class ProductGroupController extends Controller
 
         $ProductGroup->update($request->all());
 
-        return redirect(route('product-group.index'))->with('success',  $this->description_table.' atualizado!');
+        return redirect(route('product-group.index'))->with('success',  $this->description_table . ' atualizado!');
     }
 
     /**
@@ -106,8 +106,8 @@ class ProductGroupController extends Controller
     public function destroy(ProductGroup $ProductGroup)
     {
         $ProductGroup->delete();
-        
-        return redirect(route('product-group.index'))->with('success',  $this->description_table.' deletado!');
+
+        return redirect(route('product-group.index'))->with('success',  $this->description_table . ' deletado!');
     }
 
     /**
@@ -119,14 +119,12 @@ class ProductGroupController extends Controller
     {
         $data = [];
 
-        if($request->has('q')){
+        if ($request->has('q')) {
             $search = $request->q;
-            $data =ProductGroup::select("id","description")
-                    ->where('description','LIKE',"%$search%")
-                    ->get();
+            $data = ProductGroup::select("id", "description")
+                ->where('description', 'LIKE', "%$search%")
+                ->get();
         }
         return response()->json($data);
     }
-
-
 }

@@ -28,9 +28,9 @@ class UnitOfMeasureController extends Controller
      */
     public function index()
     {
-       return view('unit-of-measure.index',array(
-        'aUnitOfMeasures' => UnitOfMeasure::paginate(10)
-       ));
+        return view('unit-of-measure.index', array(
+            'aUnitOfMeasures' => UnitOfMeasure::paginate(10)
+        ));
     }
 
     /**
@@ -55,7 +55,7 @@ class UnitOfMeasureController extends Controller
 
         UnitOfMeasure::create($request->all());
 
-        return redirect(route('unit-of-measure.index'))->with('success', $this->description_table.' cadastrado!');
+        return redirect(route('unit-of-measure.index'))->with('success', $this->description_table . ' cadastrado!');
     }
 
     /**
@@ -77,7 +77,7 @@ class UnitOfMeasureController extends Controller
      */
     public function edit(UnitOfMeasure $UnitOfMeasure)
     {
-        return  view('unit-of-measure.edit',compact('UnitOfMeasure'));
+        return  view('unit-of-measure.edit', compact('UnitOfMeasure'));
     }
 
     /**
@@ -93,7 +93,7 @@ class UnitOfMeasureController extends Controller
 
         $UnitOfMeasure->update($request->all());
 
-        return redirect(route('unit-of-measure.index'))->with('success', $this->description_table.' atualizado!');
+        return redirect(route('unit-of-measure.index'))->with('success', $this->description_table . ' atualizado!');
     }
 
     /**
@@ -105,8 +105,8 @@ class UnitOfMeasureController extends Controller
     public function destroy(UnitOfMeasure $UnitOfMeasure)
     {
         $UnitOfMeasure->delete();
-        
-        return redirect(route('unit-of-measure.index'))->with('success', $this->description_table.' deletado!');
+
+        return redirect(route('unit-of-measure.index'))->with('success', $this->description_table . ' deletado!');
     }
 
     /**
@@ -118,13 +118,12 @@ class UnitOfMeasureController extends Controller
     {
         $data = [];
 
-        if($request->has('q')){
+        if ($request->has('q')) {
             $search = $request->q;
-            $data =UnitOfMeasure::select("id","description")
-                    ->where('description','LIKE',"%$search%")
-                    ->get();
+            $data = UnitOfMeasure::select("id", "description")
+                ->where('description', 'LIKE', "%$search%")
+                ->get();
         }
         return response()->json($data);
     }
-
 }

@@ -18,9 +18,9 @@ class BudgetController extends Controller
      */
     public function index()
     {
-       return view('budget.index',array(
-        'aBudgets' => Budget::paginate(10)
-       ));
+        return view('budget.index', array(
+            'aBudgets' => Budget::paginate(10)
+        ));
     }
 
     /**
@@ -29,12 +29,12 @@ class BudgetController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create()
-    {	
-    	$aClients = Client::All()->pluck('name', 'id');
-    	$aPaymentConditions = PaymentCondition::All()->pluck('description', 'id');
-    	$aProducts = Product::All()->pluck('description', 'id');
+    {
+        $aClients = Client::All()->pluck('name', 'id');
+        $aPaymentConditions = PaymentCondition::All()->pluck('description', 'id');
+        $aProducts = Product::All()->pluck('description', 'id');
 
-      return  view('budget.create',compact('aClients','aPaymentConditions','aProducts'));
+        return  view('budget.create', compact('aClients', 'aPaymentConditions', 'aProducts'));
     }
 
     /**
@@ -45,28 +45,27 @@ class BudgetController extends Controller
      */
     public function store(BudgetFormRequest $request)
     {
-     	
-     	//dd($request->all());	   
+
+        //dd($request->all());	   
         $validated = $request->validated();
-        $budget = Budget::create( $request->all() );
+        $budget = Budget::create($request->all());
 
-        if (! empty($budget) ) {
-               
-            for ($i=0; $i < count($request->product_id); $i++) { 
-               
-               if( empty($request->deleted[$i]) ){     
-                   $budget_item = new Budget_item();
-                   $budget_item->budget_id    = $budget->id;
-                   $budget_item->product_id   = $request->product_id[$i];
-                   $budget_item->quantidade   = floatval($request->quantidade[$i]);
-                   $budget_item->vlr_unitario = floatval($request->vlr_unitario[$i]);
-                   $budget_item->vlr_total    = floatval($request->vlr_total[$i]);
-                   $budget_item->desconto     = floatval($request->desconto[$i]);
-                   $budget_item->tot_liquido  = floatval($request->tot_liquido[$i]);
-                   $budget_item->save();
-               }
+        if (!empty($budget)) {
+
+            for ($i = 0; $i < count($request->product_id); $i++) {
+
+                if (empty($request->deleted[$i])) {
+                    $budget_item = new Budget_item();
+                    $budget_item->budget_id    = $budget->id;
+                    $budget_item->product_id   = $request->product_id[$i];
+                    $budget_item->quantidade   = floatval($request->quantidade[$i]);
+                    $budget_item->vlr_unitario = floatval($request->vlr_unitario[$i]);
+                    $budget_item->vlr_total    = floatval($request->vlr_total[$i]);
+                    $budget_item->desconto     = floatval($request->desconto[$i]);
+                    $budget_item->tot_liquido  = floatval($request->tot_liquido[$i]);
+                    $budget_item->save();
+                }
             }
-
         }
 
         return redirect(route('budget.index'))->with('success', 'Orçamento cadastrado!');
@@ -80,7 +79,7 @@ class BudgetController extends Controller
      */
     public function show(Budget $budget)
     {
-      //
+        //
     }
 
     /**
@@ -96,7 +95,7 @@ class BudgetController extends Controller
         $aPaymentConditions = PaymentCondition::All()->pluck('descricao', 'id');
         $aProducts = Product::All()->pluck('descricao', 'id');
 
-        return  view('budget.edit',compact('budget','aClients','aPaymentConditions','aProducts'));
+        return  view('budget.edit', compact('budget', 'aClients', 'aPaymentConditions', 'aProducts'));
     }
 
     /**
@@ -112,43 +111,39 @@ class BudgetController extends Controller
 
         $budget->update($request->all());
 
-        if (! empty($budget) ) {
-             
- //           dd($request->all());
+        if (!empty($budget)) {
 
-            for ($i=0; $i < count($request->product_id); $i++) { 
-               
+            //           dd($request->all());
 
-               if ( (empty($request->id[$i]) && empty($request->deleted[$i])) || ( !empty($request->id[$i]) && empty($request->deleted[$i]))  ){
+            for ($i = 0; $i < count($request->product_id); $i++) {
 
-                    if ( ! empty($request->id[$i]) ){
+
+                if ((empty($request->id[$i]) && empty($request->deleted[$i])) || (!empty($request->id[$i]) && empty($request->deleted[$i]))) {
+
+                    if (!empty($request->id[$i])) {
                         $budget_item =  Budget_item::find($request->id[$i]);
-                    }
-                    else{
-                        $budget_item = new Budget_item();    
-                    }
-                     
-                   $budget_item->budget_id    = $budget->id;
-                   $budget_item->product_id   = $request->product_id[$i];
-                   $budget_item->quantidade   = floatval($request->quantidade[$i]);
-                   $budget_item->vlr_unitario = floatval($request->vlr_unitario[$i]);
-                   $budget_item->vlr_total    = floatval($request->vlr_total[$i]);
-                   $budget_item->desconto     = floatval($request->desconto[$i]);
-                   $budget_item->tot_liquido  = floatval($request->tot_liquido[$i]);
-                   $budget_item->save();
-
-               }
-               else {     
-
-                    if ( ! empty($request->id[$i]) && ! empty($request->deleted[$i])){
-                           $budget_item =  Budget_item::find($request->id[$i]);   
-                           $budget_item->delete();
+                    } else {
+                        $budget_item = new Budget_item();
                     }
 
-               }     
+                    $budget_item->budget_id    = $budget->id;
+                    $budget_item->product_id   = $request->product_id[$i];
+                    $budget_item->quantidade   = floatval($request->quantidade[$i]);
+                    $budget_item->vlr_unitario = floatval($request->vlr_unitario[$i]);
+                    $budget_item->vlr_total    = floatval($request->vlr_total[$i]);
+                    $budget_item->desconto     = floatval($request->desconto[$i]);
+                    $budget_item->tot_liquido  = floatval($request->tot_liquido[$i]);
+                    $budget_item->save();
+                } else {
+
+                    if (!empty($request->id[$i]) && !empty($request->deleted[$i])) {
+                        $budget_item =  Budget_item::find($request->id[$i]);
+                        $budget_item->delete();
+                    }
+                }
             }
-        }            
- 
+        }
+
 
         return redirect(route('budget.index'))->with('success', 'Orçamento atualizado!');
     }
@@ -163,12 +158,12 @@ class BudgetController extends Controller
     {
 
         foreach ($budget->budget_items as $budget_item) {
-    
-            $budget_item->delete();    
+
+            $budget_item->delete();
         }
 
         $budget->delete();
-        
+
         return redirect(route('budget.index'))->with('success', 'Orçamento deletado!');
     }
 }
