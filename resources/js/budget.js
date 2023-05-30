@@ -80,7 +80,7 @@ jQuery(function($) {
 
         html = '<tr data-row="'+nRows+'" >'+$(document).find("#produtions-itens tbody tr:last")[0].innerHTML.replace( /\[(\w+)\]/gm ,'['+nRows+']')+'</tr>';	
 
-		$(document).find("#produtions-itens tbody").append(html);	
+		    $(document).find("#produtions-itens tbody").append(html);	
 
         $("select[name='product_id[]']" ).select2({
           theme: "bootstrap",
